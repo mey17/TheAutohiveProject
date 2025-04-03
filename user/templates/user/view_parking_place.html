@@ -1,0 +1,151 @@
+{% extends "user/base_simple.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-primary">{{ parking_place.name }}</h2>
+    <p class="text-center text-light">{{ parking_place.address }}</p>
+    
+    <div class="row text-center mt-4">
+        <div class="col-md-6">
+            <p class="lead text-success"><strong>Available Slots:</strong> {{ available_slots.count }}</p>
+        </div>
+        <div class="col-md-6">
+            <p class="lead text-danger"><strong>Reserved Slots:</strong> {{ reserved_slots|length }}</p>
+        </div>
+    </div>
+
+    <div class="parking-lot mt-4 d-flex flex-wrap justify-content-center">
+        {% for slot in slots %}
+            <div class="slot {% if slot.is_reserved %}reserved{% else %}available{% endif %} m-1 p-2 rounded shadow-sm" 
+                data-slot-id="{{ slot.id }}">
+                <span class="slot-number">{{ slot.slot_number }}</span>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if active_reservation %}
+        <div class="alert alert-warning mt-4 text-center">
+            You already have an active reservation from {{ active_reservation.start_time }} to {{ active_reservation.end_time }}.
+            <a href="{% url 'cancel_reservation' %}" class="btn btn-danger mt-2">Cancel Reservation</a>
+        </div>
+    {% else %}
+    <div class="reservation-form mt-4">
+        <h4 class="text-center text-primary">Reserve a Slot</h4>
+        <form method="POST" class="text-center mx-auto" style="max-width: 400px;" action="{% url 'reserve_parking' %}">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="slot_id" class="form-label">Select Slot:</label>
+                <select name="slot_id" id="slot_id" class="form-select">
+                    {% for slot in slots %}
+                        <option value="{{ slot.id }}" {% if slot.is_reserved %}disabled{% endif %}>
+                            Slot {{ slot.slot_number }}{% if slot.is_reserved %} (Reserved){% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="start_time" class="form-label">Start Time:</label>
+                <input type="datetime-local" name="start_time" id="start_time" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="end_time" class="form-label">End Time:</label>
+                <input type="datetime-local" name="end_time" id="end_time" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Reserve</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .parking-lot {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 10px;
+    }
+    .slot {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .slot:hover {
+        transform: scale(1.05);
+    }
+    .available {
+        background-color: green;
+    }
+    .reserved {
+        background-color: red;
+        cursor: not-allowed;
+    }
+    .selected {
+        background-color: orange;
+    }
+    .slot-number {
+        font-size: 1.2rem;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const startTimeInput = document.getElementById("start_time");
+        const endTimeInput = document.getElementById("end_time");
+        const slotSelect = document.getElementById("slot_id");
+        const slots = document.querySelectorAll(".slot");
+
+        let today = new Date();
+        let minDate = today.toISOString().slice(0, 10);
+        let maxDate = new Date(today.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+        
+        startTimeInput.setAttribute("min", `${minDate}T09:00`);
+        startTimeInput.setAttribute("max", `${maxDate}T23:59`);
+        endTimeInput.setAttribute("min", `${minDate}T09:00`);
+        endTimeInput.setAttribute("max", `${maxDate}T23:59`);
+        
+        startTimeInput.addEventListener("change", function () {
+            let startTime = new Date(startTimeInput.value);
+            let maxEndTime = new Date(startTime.getTime() + 168 * 60 * 60 * 1000);
+
+            let maxEndDate = maxEndTime.toISOString().slice(0, 16);
+            
+            endTimeInput.min = startTimeInput.value;
+            endTimeInput.max = maxEndDate;
+        });
+
+        slots.forEach(slot => {
+            if (!slot.classList.contains("reserved")) {
+                slot.addEventListener("click", function () {
+       
+                    slots.forEach(s => s.classList.remove("selected"));
+
+                    
+                    slot.classList.add("selected");
+
+                    slotSelect.value = slot.getAttribute("data-slot-id");
+                });
+            }
+        });
+
+        slotSelect.addEventListener("change", function () {
+            const selectedSlotId = slotSelect.value;
+
+            
+            slots.forEach(slot => slot.classList.remove("selected"));
+
+           
+            const selectedSlot = document.querySelector(`.slot[data-slot-id="${selectedSlotId}"]`);
+            if (selectedSlot) {
+                selectedSlot.classList.add("selected");
+            }
+        });
+    });
+</script>
+{% endblock %}

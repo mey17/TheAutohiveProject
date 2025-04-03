@@ -1,0 +1,14 @@
+{% extends "user/index.html" %}
+{% block start %}
+
+<div class="content-section col-md-8 col-md-offset-2">
+    <center>
+        <h2>You have been logged out</h2>
+        <p>Thank you for visiting The Autohive Smart Parking System.</p>
+        <br/>
+        <a href="{% url 'login' %}" class="btn btn-outline-info" style="margin-right: 10px;"><span class="glyphicon glyphicon-log-in"></span> Sign In</a>
+        <a href="{% url 'register' %}" class="btn btn-outline-info"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+    </center>
+</div>
+
+{% endblock start %}

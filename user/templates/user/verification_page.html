@@ -1,0 +1,81 @@
+{% extends "user/base_simple.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+.card {
+    background:#2c3e50;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background: #2c3e50;
+    border: none;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.btn-primary:hover {
+    background: #34495e;
+}
+
+.timer {
+    font-weight: bold;
+    color: #e74c3c;
+}
+</style>
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow p-4" style="width: 100%; max-width: 500px; border-radius: 12px;">
+        <div class="card-body">
+            <h2 class="text-center mb-4" style="font-weight: bold; color: #ffffff;">Verify Your Email</h2>
+            <p class="text-center " style="color: #ffffff;">Enter the 4-digit verification code sent to your email.</p>
+
+            <p class="text-center timer mb-4">
+                Time remaining: <span id="countdown">02:00</span>
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    {{ form|crispy }}
+                </fieldset>
+                <div class="text-center mt-3">
+                    <button 
+                        class="btn btn-primary btn-block" 
+                        type="submit" 
+                        style="background: green; border: none; font-size: 1.2rem; padding: 10px 20px; border-radius: 8px;">
+                        Verify
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    const countdownElement = document.getElementById('countdown');
+    let timeLeft = 120; 
+
+    const countdownInterval = setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+
+       
+        countdownElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            countdownElement.textContent = "Expired";
+            alert('Your verification code has expired. Please try again.');
+            window.location.href = "{% url 'register' %}"; 
+        }
+
+        timeLeft--;
+    }, 1000);
+</script>
+{% endblock content %}

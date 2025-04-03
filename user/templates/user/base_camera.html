@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="QR Code Reader">
+    <title>{{ title }}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #172737; /* Default dark mode */
+            color: #ffffff; /* Light text for dark background */
+        }
+        .btn-toggle-bg {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+    </style>
+    {% block extra_head %}{% endblock extra_head %}
+</head>
+<body>
+    <!-- Background Toggle Button -->
+    <button id="toggle-bg-btn" class="btn btn-light btn-toggle-bg">Switch to Light Mode</button>
+
+    <div class="container">
+        {% block content %}{% endblock content %}
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    <!-- Background Toggle Script -->
+    <script>
+        const toggleBgBtn = document.getElementById('toggle-bg-btn');
+        toggleBgBtn.addEventListener('click', () => {
+            const body = document.body;
+            if (body.style.backgroundColor === 'white') {
+                body.style.backgroundColor = '#172737'; // Dark mode
+                body.style.color = '#ffffff'; // Light text
+                toggleBgBtn.innerText = 'Switch to Light Mode';
+                toggleBgBtn.classList.remove('btn-dark');
+                toggleBgBtn.classList.add('btn-light');
+            } else {
+                body.style.backgroundColor = 'white'; // Light mode
+                body.style.color = '#000000'; // Dark text
+                toggleBgBtn.innerText = 'Switch to Dark Mode';
+                toggleBgBtn.classList.remove('btn-light');
+                toggleBgBtn.classList.add('btn-dark');
+            }
+        });
+    </script>
+
+    {% block extra_scripts %}{% endblock extra_scripts %}
+</body>
+</html>

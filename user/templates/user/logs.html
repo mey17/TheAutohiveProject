@@ -1,0 +1,41 @@
+{% extends "user/base_simple.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="font-weight: bold; font-size: 2.5rem; color: #007bff;">My Logs</h2>
+    {% if user.is_authenticated %}
+    <div class="table-responsive">
+        <table class="table table-dark table-hover table-bordered" style="font-size: 1.2rem;">
+            <thead class="thead-dark">
+                <tr>
+                    <th style="width: 10%;">Action ID</th>
+                    <th style="width: 20%;">Action</th>
+                    <th style="width: 25%;">Parking Lot</th>
+                    <th style="width: 20%;">Slot</th>
+                    <th style="width: 25%;">Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.action }}</td>
+                    <td>{% if log.parking_lot %}{{ log.parking_lot.name }}{% else %}N/A{% endif %}</td>
+                    <td>{% if log.slot %}{{ log.slot.slot_number }}{% else %}N/A{% endif %}</td>
+                    <td>{{ log.timestamp }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center" style="font-size: 1.5rem;">No logs available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center" style="font-size: 1.5rem;">
+        <p>Please <a href="{% url 'login' %}" style="color: #007bff; text-decoration: none;">log in</a> or <a href="{% url 'register' %}" style="color: #007bff; text-decoration: none;">sign up</a> to view your logs.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

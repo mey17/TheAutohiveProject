@@ -1,0 +1,88 @@
+{% extends 'user/base_simple.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center text-center">
+        <div class="col-lg-8">
+            <h1 class="display-4 fw-bold text-light mb-4">About AutoHive</h1>
+            <p class="lead text-light">
+                AutoHive is a smart parking solution designed to make parking more efficient and secure. Our project allows users to reserve parking spots for anywhere from 15 minutes to 7 days using advanced QR code technology. 
+            </p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-lg p-4 bg-dark text-light">
+                <h3 class="fw-bold text-primary mb-3">Why Choose AutoHive?</h3>
+                <ul class="list-unstyled">
+                    <li class="d-flex align-items-center mb-3">
+                        <i class="fas fa-check-circle text-success me-3"></i>
+                        <span>Smart, automated parking reservations</span>
+                    </li>
+                    <li class="d-flex align-items-center mb-3">
+                        <i class="fas fa-check-circle text-success me-3"></i>
+                        <span>High-security system with QR code-based access</span>
+                    </li>
+                    <li class="d-flex align-items-center mb-3">
+                        <i class="fas fa-check-circle text-success me-3"></i>
+                        <span>Parking reservations from anywhere, at any time</span>
+                    </li>
+                    <li class="d-flex align-items-center mb-3">
+                        <i class="fas fa-check-circle text-success me-3"></i>
+                        <span>Real-time availability updates to ensure convenience</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 text-center">
+        <h2 class="fw-bold text-light">Our Mission</h2>
+        <p class="lead text-light mx-auto" style="max-width: 800px;">
+            At AutoHive, our mission is simple: To ease traffic congestion by providing easy, secure parking reservations. Our platform helps you find and reserve parking spots with just a few clicks—without the worry of fraud or availability issues.
+        </p>
+    </div>
+
+    <div class="row mt-5 text-center">
+        <div class="col-md-4">
+            <h3 class="fw-bold text-primary">Innovative Technology</h3>
+            <p class="text-light">We utilize cutting-edge technology to bring you a seamless parking experience. With our automated system and QR code-based entry, parking has never been more secure and efficient.</p>
+        </div>
+        <div class="col-md-4">
+            <h3 class="fw-bold text-primary">Accessibility</h3>
+            <p class="text-light">Reserve your spot from anywhere, at any time, as long as you have an internet connection. No more wasted time driving around searching for a parking space.</p>
+        </div>
+        <div class="col-md-4">
+            <h3 class="fw-bold text-primary">Safety First</h3>
+            <p class="text-light">AutoHive prioritizes safety. Our QR code system guarantees secure access, and our platform ensures that your reservation is always protected from fraud.</p>
+        </div>
+    </div>
+
+    <!-- Project and Armath Engineering Lab Information -->
+    <div class="row mt-5 text-center">
+        <h2 class="fw-bold text-light">About the Project</h2>
+        <p class="lead text-light mx-auto" style="max-width: 800px;">
+            This project was created in the Armath Engineering Lab of Yerevan's 146 school in Armenia by the student of this lab, Milena Grigoryan. The Armath Engineering Laboratories are dedicated to fostering innovation and technical skills among students, providing them with the tools and knowledge to create impactful projects like AutoHive.
+        </p>
+    </div>
+
+    <div class="row mt-5 text-center">
+        <div class="col-md-6">
+            <h3 class="fw-bold text-primary">About Armath Engineering Laboratories</h3>
+            <p class="text-light">
+                Armath Engineering Laboratories are educational hubs that aim to inspire and educate young minds in the fields of engineering and technology. These labs provide students with hands-on experience and mentorship, enabling them to develop practical skills and work on real-world projects.
+            </p>
+            <img src="{% static 'images/armath_lab.jpg' %}" alt="Armath Engineering Lab" class="img-fluid rounded shadow-lg mt-3" style="max-width: 300px;">
+        </div>
+        <div class="col-md-6">
+            <h3 class="fw-bold text-primary">About the Creator</h3>
+            <p class="text-light">
+                Milena Grigoryan, a dedicated student at the Armath Engineering Lab, has demonstrated exceptional skills and creativity in developing the AutoHive project. Her passion for technology and innovation has driven her to create a solution that addresses real-world challenges in parking management.
+            </p>
+            <img src="{% static 'images/milena_gevorgyan.jpg' %}" alt="Milena Grigoryan" class="img-fluid rounded-circle shadow-lg mt-3" style="max-width: 200px;">
+        </div>
+    </div>
+</div>
+{% endblock %}

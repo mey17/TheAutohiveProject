@@ -1,0 +1,11 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<h2>Add Parking Lot</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+
+

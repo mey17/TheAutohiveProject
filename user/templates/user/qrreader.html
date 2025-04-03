@@ -1,0 +1,104 @@
+{% extends "user/base_camera.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="content-section text-center">
+        <h2 class="mb-4" style="font-weight: bold; color: #2c3e50;">Autohive - QR Code Reader</h2>
+        
+        <!-- Parking Place Selection -->
+        <div class="mb-4">
+            <label for="parking-place" class="form-label" style="font-weight: bold;">Select Parking Place:</label>
+            <select id="parking-place" class="form-select" style="max-width: 300px; margin: auto;">
+                <option value="" disabled selected>Select a parking place</option>
+                {% for place in parking_places %}
+                <option value="{{ place.id }}">{{ place.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Entering or Exiting Toggle -->
+        <div class="mb-4">
+            <label for="scan-type" class="form-label" style="font-weight: bold;">Are you entering or exiting?</label>
+            <select id="scan-type" class="form-select" style="max-width: 300px; margin: auto;">
+                <option value="entering" selected>Entering</option>
+                <option value="exiting">Exiting</option>
+            </select>
+        </div>
+
+        <!-- Camera Section -->
+        <div id="camera-section" class="mb-4">
+            <video id="camera" autoplay style="width: 100%; max-width: 700px; border: 1px solid #ccc;"></video>
+        </div>
+
+        <!-- Scan QR Code Button -->
+        <button id="scan-qr-btn" class="btn btn-primary">Scan QR Code</button>
+
+        <!-- Feedback Message -->
+        <div id="feedback-message" class="mt-4" style="font-weight: bold; color: #2c3e50;"></div>
+    </div>
+</div>
+<script>
+    const feedbackMessage = document.getElementById('feedback-message');
+    const video = document.getElementById('camera');
+
+    // Access the camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+            video.srcObject = stream;
+        })
+        .catch((error) => {
+            console.error("Error accessing the camera: ", error);
+            feedbackMessage.textContent = "Unable to access the camera. Please check your browser permissions.";
+            feedbackMessage.style.color = "red";
+        });
+
+    document.getElementById('scan-qr-btn').addEventListener('click', function() {
+        const parkingPlace = document.getElementById('parking-place').value;
+        const scanType = document.getElementById('scan-type').value;
+
+        if (!parkingPlace) {
+            feedbackMessage.textContent = "Please select a parking place.";
+            feedbackMessage.style.color = "red";
+            return;
+        }
+
+        // Capture a frame from the video stream
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Convert the frame to a Blob
+        canvas.toBlob((blob) => {
+            const formData = new FormData();
+            formData.append('parking_place', parkingPlace);
+            formData.append('scan_type', scanType);
+            formData.append('frame', blob);
+
+            fetch("{% url 'qrreader' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    feedbackMessage.textContent = data.message;
+                    feedbackMessage.style.color = "green";
+                } else {
+                    feedbackMessage.textContent = data.message;
+                    feedbackMessage.style.color = "red";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                feedbackMessage.textContent = "An error occurred while scanning the QR code.";
+                feedbackMessage.style.color = "red";
+            });
+        }, 'image/jpeg');
+    });
+</script>
+{% endblock content %}

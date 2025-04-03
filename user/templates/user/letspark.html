@@ -1,0 +1,45 @@
+{% extends "user/base_simple.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">
+        <i class="fas fa-parking"></i> Available Parking Places
+    </h2>
+
+    {% if user.is_authenticated %}
+    <div class="row">
+        {% for place in parking_places %}
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-body">
+                    <h4 class="card-title text-dark"><i class="fas fa-map-marker-alt"></i> {{ place.name }}</h4>
+                    <hr>
+                    <p class="text-muted"><i class="fas fa-car"></i> Available Slots: 
+                        <span class="fw-bold text-success">{{ place.available_slots_count }}</span>
+                    </p>                    
+                    <p class="text-muted"><i class="fas fa-warehouse"></i> Max Capacity: 
+                        <span class="fw-bold text-danger">{{ place.max_slots }}</span>
+                    </p>
+                    <p class="text-muted"><i class="fas fa-map-marker"></i> Address: 
+                        <span class="fw-bold">{{ place.address }}</span>
+                    </p>
+                    <a href="{% url 'view_parking_place' place.id %}" class="btn btn-primary w-100">
+                        <i class="fas fa-info-circle"></i> View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center">
+                <i class="fas fa-exclamation-triangle"></i> No parking places available at the moment.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center">
+        <p>Please <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">sign up</a> to reserve a parking spot.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

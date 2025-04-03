@@ -1,0 +1,49 @@
+{% extends "user/base_simple.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 rounded bg-dark text-light">
+        <h2 class="text-center mb-4 text-warning" style="font-weight: bold;">Your Reservation Details</h2>
+        {% if reservation %}
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h4 class="text-light">{{ reservation.parking_lot.name }}</h4>
+                    <p><strong>Slot Number:</strong> <span class="badge bg-success px-3 py-2">#{{ reservation.slot.slot_number }}</span></p>
+                    <p><strong>Start Time:</strong> {{ reservation.start_time }}</p>
+                    <p><strong>End Time:</strong> {{ reservation.end_time }}</p>
+                    <p><strong>Time Left:</strong> <span id="countdown" class="text-danger fw-bold"></span></p>
+                </div>
+                
+            </div>
+            <form method="POST" action="{% url 'cancel_reservation' %}" onsubmit="return confirmCancel();" class="mt-4">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger w-100 py-2" style="font-size: 1.2rem;">Cancel Reservation</button>
+            </form>
+        {% else %}
+            <p class="text-center text-muted" style="font-size: 1.5rem;">You have no active reservations.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function confirmCancel() {
+    return confirm("Are you sure you want to cancel your reservation?");
+}
+
+
+function updateCountdown() {
+    let endTime = new Date("{{ reservation.end_time|date:'Y-m-d H:i:s' }}").getTime();
+    let now = new Date().getTime();
+    let timeLeft = endTime - now;
+    if (timeLeft > 0) {
+        let hours = Math.floor(timeLeft / (1000 * 60 * 60));
+        let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById("countdown").innerText = `${hours}h ${minutes}m remaining`;
+    } else {
+        document.getElementById("countdown").innerText = "Expired";
+    }
+}
+setInterval(updateCountdown, 60000); 
+updateCountdown();
+</script>
+{% endblock %}

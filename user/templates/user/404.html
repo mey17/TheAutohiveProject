@@ -1,0 +1,15 @@
+{% extends "user/base_simple.html" %}
+
+{% block content %}
+<div class="container text-center d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh;">
+    <h1 class="display-1 text-danger fw-bold">404</h1>
+    <h2 class="text-dark fw-bold">Page Not Found</h2>
+    
+    <p class="lead text-muted mt-3" style="font-size: 1.5rem; color:rgb(255, 0, 0)">Oops! The page you're looking for doesn't exist.</p>
+    <p class="text-muted" style="font-size: 1.2rem; color:rgb(255, 0, 0)">It might have been moved, deleted, or the URL might be incorrect.</p>
+    <a href="{% url 'index' %}" class="btn btn-primary btn-lg mt-4">
+        <i class="fas fa-home"></i> Return to Home
+    </a>
+
+</div>
+{% endblock %}

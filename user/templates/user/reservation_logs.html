@@ -1,0 +1,30 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<h2>Reservation Logs</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Action</th>
+            <th>User</th>
+            <th>Parking Place</th>
+            <th>Slot</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.timestamp }}</td>
+            <td>{{ log.action }}</td>
+            <td>{{ log.user.username }}</td>
+            <td>{{ log.parking_lot.name }}</td>
+            <td>Slot {{ log.slot.slot_number }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">No reservation logs available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

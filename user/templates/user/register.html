@@ -1,0 +1,59 @@
+{% extends "user/base_simple.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+
+.card {
+    background: #2c3e50;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background: #2c3e50;
+    border: none;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.btn-primary:hover {
+    background: #34495e;
+}
+
+</style>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow p-4" style="width: 100%; max-width: 500px; border-radius: 12px;">
+        <div class="card-body">
+            <h2 class="text-center mb-4" style="font-weight: bold; color: #ffffff;">Create an Account</h2>
+            <p class="text-center "style="font-weight: bold;">Join us and start using Autohive today</p>
+            
+            <form method="POST" style="font-weight: bold; color: #ffffff;">
+                {% csrf_token %}
+                <fieldset class="form-group" style="font-weight: bold; color: #ffffff;">
+                    {{ form|crispy }}
+                </fieldset>
+                <div class="text-center mt-3">
+                    <button 
+                        class="btn btn-primary btn-block" 
+                        type="submit" 
+                        style="background: #3498db; border: none; font-size: 1.2rem; padding: 10px 20px; border-radius: 8px;">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-center mt-3">
+                <p class="mb-0" style = "font-weight: bold;">Already have an account? 
+                    <a href="{% url 'login' %}" style="color: #3498db; text-decoration: none; font-weight: bold;">
+                        Log in
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

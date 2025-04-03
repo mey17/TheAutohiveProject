@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+   
+        <style>
+            @import url('https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900');
+            body {
+                background: #f5f8fa;
+                font-family: 'Roboto', sans-serif;
+            }
+            .email-container {
+                width: 90%;
+                max-width: 600px;
+                margin: 20px auto;
+                background: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .email-header {
+                text-align: center;
+                color: #425b76;
+            }
+            .email-header h2 {
+                margin: 40px 0 27px 0;
+            }
+            .email-header hr {
+                border: 0;
+                border-top: 1px solid rgba(66,91,118,0.3);
+                max-width: 50%;
+            }
+            .email-body {
+                font-size: 15.5px;
+                font-weight: bold;
+                margin: 40px 20px 15px 20px;
+                color: #425b76;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="email-container">
+            <section class="email-header">
+                <h2>Thank you for registering</h2>
+                <hr>
+            </section>
+            <section class="email-body">
+                <p>Hi {{ username }},</p>
+                <p>Thank you for registering with us! To complete your registration, please enter the following 4-digit verification code:</p>
+                <p><strong>{{ code }}</strong></p>
+                <p>Enter the code on the verification page to activate your account.</p>
+            </section>
+        </div>
+    </body>
+</html>
