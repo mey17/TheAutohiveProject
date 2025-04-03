@@ -39,6 +39,7 @@ ALLOWED_HOSTS = [
     '172.20.10.2',
     'beloved-thoroughly-garfish.ngrok-free.app',
     '192.168.152.201',
+    '.vercel.app',
 ]
 LOGOUT_REDIRECT_URL='/'
 
